@@ -1,0 +1,87 @@
+{
+  "name": "@hibira-io/svelte",
+  "version": "0.1.0",
+  "description": "Svelte 5 and Svelte 4 stores for pusher-js on Hibira and other Pusher-compatible servers, made for SvelteKit: shared channels, events, presence, connection state, client events, LLM token streaming with streamToChannel, and a channel auth handler for +server.js",
+  "keywords": [
+    "svelte",
+    "sveltekit",
+    "svelte5",
+    "runes",
+    "stores",
+    "pusher",
+    "pusher-js",
+    "websocket",
+    "realtime",
+    "presence",
+    "llm",
+    "ai",
+    "streaming",
+    "hibira"
+  ],
+  "homepage": "https://hibira.io",
+  "bugs": {
+    "url": "https://github.com/hibira-io/svelte/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hibira-io/svelte.git"
+  },
+  "license": "MIT",
+  "author": "Hibira (https://hibira.io)",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "svelte": "./index.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "svelte": "./index.js",
+      "default": "./index.js"
+    },
+    "./server": {
+      "types": "./server.d.ts",
+      "default": "./server.js"
+    },
+    "./kit": {
+      "types": "./kit.d.ts",
+      "default": "./kit.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "client.js",
+    "client.d.ts",
+    "stream.js",
+    "stream.d.ts",
+    "agent.js",
+    "agent.d.ts",
+    "server.js",
+    "server.d.ts",
+    "kit.js",
+    "kit.d.ts",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --conditions=browser --test test/*.test.mjs && node --test test/*.ssr.mjs",
+    "test:e2e": "node --test test/e2e/*.e2e.mjs",
+    "typecheck": "tsc -p test/tsconfig.json"
+  },
+  "peerDependencies": {
+    "pusher-js": ">=7",
+    "svelte": "^4.0.0 || ^5.0.0"
+  },
+  "devDependencies": {
+    "jsdom": "^27.4.0",
+    "pusher": "^5.3.4",
+    "pusher-js": "^8.6.0",
+    "svelte": "^5.57.3",
+    "typescript": "^5.9.3"
+  }
+}
