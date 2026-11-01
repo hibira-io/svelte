@@ -1,0 +1,65 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["20", "22", "24"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - name: Package contents
+        run: npm pack --dry-run
+
+  svelte-4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm install --no-save svelte@4
+      - run: npm test
+
+  # Builds the SvelteKit app in test/fixtures/sveltekit against the packed
+  # package, then server-renders its page.
+  sveltekit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm pack
+      - working-directory: test/fixtures/sveltekit
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../../hibira-io-svelte-*.tgz
+          npm run build
+      - name: Server render
+        working-directory: test/fixtures/sveltekit
+        env:
+          PORT: "5180"
+          PUBLIC_HIBIRA_KEY: ci-key
+          HIBIRA_APP_ID: ci-app
+          HIBIRA_SECRET: ci-secret
+        run: |
+          node build & sleep 2
+          html="$(curl -sf 'http://localhost:5180/?user=ann')"
+          echo "$html" | grep -q '<strong id="state">initialized</strong>'
+          echo "$html" | grep -q '<strong id="me">Ann</strong>'
+          kill %1

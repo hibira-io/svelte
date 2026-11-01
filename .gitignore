@@ -1,0 +1,7 @@
+node_modules/
+*.tgz
+.DS_Store
+test/.compiled/
+test/fixtures/sveltekit/node_modules/
+test/fixtures/sveltekit/build/
+test/fixtures/sveltekit/.svelte-kit/
