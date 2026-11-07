@@ -42,14 +42,13 @@ Create the instance once, in the root layout, and put it in context:
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { env } from '$env/dynamic/public';
   import { createHibira, setHibira } from '@hibira-io/svelte';
 
   let { children } = $props();
 
   setHibira(
     createHibira({
-      appKey: env.PUBLIC_HIBIRA_KEY,
+      appKey: import.meta.env.VITE_HIBIRA_KEY, // VITE_HIBIRA_KEY in .env
       options: {
         channelAuthorization: { endpoint: '/api/hibira/auth', transport: 'ajax' },
       },

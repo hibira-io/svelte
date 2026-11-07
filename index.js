@@ -43,6 +43,7 @@ let fallback = null;
  */
 export function createHibira({ appKey, options, client } = {}) {
   let pusher = null;
+  let warned = false;
   const hibira = {
     /** The pusher-js client; opened on first use in the browser, null on the server. */
     get client() {
@@ -50,6 +51,10 @@ export function createHibira({ appKey, options, client } = {}) {
       if (typeof window === 'undefined') return null;
       if (client) pusher = typeof client === 'function' ? client() : client;
       else if (appKey) pusher = new Pusher(appKey, hibiraOptions(options));
+      else if (!warned) {
+        warned = true;
+        console.warn('@hibira-io/svelte: createHibira() got no appKey, so nothing connects. Check the variable you pass (on SvelteKit 3, $env/dynamic/public is empty unless declared; import.meta.env.VITE_HIBIRA_KEY works on Kit 2 and 3).');
+      }
       return pusher;
     },
     /** Disconnects a client this instance opened. */
