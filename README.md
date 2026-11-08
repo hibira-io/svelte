@@ -160,6 +160,24 @@ user)` does the same for `pusher.signin()` and the `userAuthentication`
 endpoint. Both only use the standard `Request` and `Response`, so they work
 outside SvelteKit too.
 
+## Encrypted channels
+
+On `private-encrypted-` channels your backend encrypts each event and only
+subscribers can read it; Hibira relays ciphertext it cannot decrypt. The
+default browser build of pusher-js cannot decrypt, so pass the build that includes encryption:
+
+```js
+import Pusher from 'pusher-js/with-encryption';
+
+const hibira = createHibira({ appKey, Pusher, options: { channelAuthorization: { endpoint: '/api/hibira/auth' } } });
+```
+
+On the backend, give the `pusher` package a 32-byte key (`openssl rand -base64 32`)
+as `encryptionMasterKeyBase64`. It then encrypts what you trigger on these
+channels, and `authorizeChannel` returns the channel's key to the subscriber.
+`useEvent` and `useStream` get the decrypted data as usual. Client events
+(`useTrigger`) are not allowed on encrypted channels.
+
 ## Streaming LLM output
 
 Send the model's stream from a `+server.js` with `streamToChannel()`. It
@@ -303,6 +321,7 @@ Pusher）即時套件。每個函式都回傳標準的 `svelte/store`，在元�
 不會連線，也不會造成 hydration 不一致；`@hibira-io/svelte/kit` 的
 `channelAuth()` 直接當作 `+server.js` 的 POST 使用，處理私人與 presence
 頻道的授權。
+端對端加密的 `private-encrypted-` 頻道：傳入 `pusher-js/with-encryption` 的 `Pusher`。
 
 ## Licence
 

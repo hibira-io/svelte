@@ -14,7 +14,7 @@
 
 import { getContext, onDestroy, setContext } from 'svelte';
 import * as svelteStore from 'svelte/store';
-import Pusher from 'pusher-js';
+import DefaultPusher from 'pusher-js';
 import { acquireChannel, hibiraOptions, isClientEvent, presenceMembers, releaseChannel } from './client.js';
 import { STREAM_EVENT, createStreamStore, followStream, latestStream } from './stream.js';
 import { AGENT_EVENTS, createAgentStore, latestRun } from './agent.js';
@@ -40,8 +40,11 @@ let fallback = null;
  * @param {object} [config.options] pusher-js options, merged over HIBIRA_DEFAULTS
  * @param {object|(() => object)} [config.client] an existing pusher-js client
  *   (or a function returning one) to use instead, e.g. `echo.connector.pusher`
+ * @param {Function} [config.Pusher] the pusher-js class to open the
+ *   connection with; pass the one from `pusher-js/with-encryption` for
+ *   `private-encrypted-` channels
  */
-export function createHibira({ appKey, options, client } = {}) {
+export function createHibira({ appKey, options, client, Pusher = DefaultPusher } = {}) {
   let pusher = null;
   let warned = false;
   const hibira = {

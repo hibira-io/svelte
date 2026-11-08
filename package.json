@@ -1,6 +1,6 @@
 {
   "name": "@hibira-io/svelte",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Svelte 5 and Svelte 4 stores for pusher-js on Hibira and other Pusher-compatible servers, made for SvelteKit: shared channels, events, presence, connection state, client events, LLM token streaming with streamToChannel, and a channel auth handler for +server.js",
   "keywords": [
     "svelte",

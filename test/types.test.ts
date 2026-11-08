@@ -1,4 +1,5 @@
 // Compiled by `npm run typecheck`, never run.
+import EncryptedPusher from 'pusher-js/with-encryption';
 import { get, writable } from 'svelte/store';
 import Pusher from 'pusher';
 import {
@@ -53,3 +54,4 @@ export async function server() {
   const r = await streamToChannel(pusher, 'private-ai', ['a', 'b'], { meta: { model: 'm' } });
   return r.id + r.text;
 }
+export const encrypted = createHibira({ appKey: 'key', Pusher: EncryptedPusher });
