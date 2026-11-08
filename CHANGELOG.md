@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
+
+`createHibira({ Pusher })` takes the pusher-js class to open the connection
+with. Pass the one from `pusher-js/with-encryption` to use end-to-end
+encrypted `private-encrypted-` channels; the default browser build of
+pusher-js cannot decrypt them. README: new "Encrypted channels" section.
 
 `createHibira()` warns once in the browser when it gets no `appKey`, instead of
 staying silent. The README's setup reads the key from
